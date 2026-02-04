@@ -46,6 +46,7 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       animation: {
+        'none': 'none',
         'fade-in': 'fadeIn 0.4s ease-out',
         'fade-in-up': 'fadeInUp 0.4s ease-out',
         'fade-in-down': 'fadeInDown 0.4s ease-out',
