@@ -1,0 +1,19 @@
+{
+  "migration_name": "20250204270000_workspace_settings",
+  "created_at": "2025-02-04T27:00:00Z",
+  "description": "Workspace settings: workspaces, workspace_members, workspace_billing, workspace_security_policies, workspace_audit_logs",
+  "tables_created": [
+    "workspaces",
+    "workspace_members",
+    "workspace_invitations",
+    "workspace_billing",
+    "workspace_security_policies",
+    "workspace_audit_logs"
+  ],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS workspace_audit_logs CASCADE; DROP TABLE IF EXISTS workspace_security_policies CASCADE; DROP TABLE IF EXISTS workspace_billing CASCADE; DROP TABLE IF EXISTS workspace_invitations CASCADE; DROP TABLE IF EXISTS workspace_members CASCADE; DROP TABLE IF EXISTS workspaces CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
