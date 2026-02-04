@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204190000_run_details_tables",
+  "created_at": "2025-02-04T19:00:00Z",
+  "description": "run_steps, run_approvals, run_artifacts tables for Run Details / History page",
+  "tables_created": ["run_steps", "run_approvals", "run_artifacts"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS run_artifacts CASCADE; DROP TABLE IF EXISTS run_approvals CASCADE; DROP TABLE IF EXISTS run_steps CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
