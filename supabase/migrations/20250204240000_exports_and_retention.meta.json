@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204240000_exports_and_retention",
+  "created_at": "2025-02-04T24:00:00Z",
+  "description": "Exports and retention_policies tables for Data Export & Retention feature",
+  "tables_created": ["exports", "retention_policies"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS retention_policies CASCADE; DROP TABLE IF EXISTS exports CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

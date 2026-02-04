@@ -8,6 +8,7 @@ import {
   Settings,
   User,
   ChevronDown,
+  Database,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -107,6 +108,17 @@ export function Sidebar() {
             >
               <Settings className="h-4 w-4" />
               Settings
+            </span>
+          </Link>
+          <Link to="/dashboard/data-management">
+            <span
+              className={cn(
+                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-card hover:text-foreground',
+                location.pathname === '/dashboard/data-management' && 'bg-primary/15 text-primary'
+              )}
+            >
+              <Database className="h-4 w-4" />
+              Data & Retention
             </span>
           </Link>
         </div>

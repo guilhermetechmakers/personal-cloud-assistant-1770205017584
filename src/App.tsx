@@ -26,6 +26,7 @@ import {
   Checkout,
   AdminDashboard,
   Notifications,
+  DataManagement,
 } from '@/pages'
 
 const queryClient = new QueryClient({
@@ -71,6 +72,7 @@ export default function App() {
             <Route path="web-agent" element={<WebAgentRuns />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<WorkspaceSettings />} />
+            <Route path="data-management" element={<DataManagement />} />
             <Route path="runs/:id" element={<RunDetails />} />
           </Route>
 

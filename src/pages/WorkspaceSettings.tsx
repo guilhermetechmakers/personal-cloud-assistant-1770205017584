@@ -177,14 +177,19 @@ export function WorkspaceSettings() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <FileText className="h-5 w-5" />
-              Audit Logs
+              Audit Logs & Data
             </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Export data and configure retention policies
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="outline" className="gap-2">
-              <Download className="h-4 w-4" />
-              Export audit log
-            </Button>
+            <Link to="/dashboard/data-management">
+              <Button variant="outline" className="gap-2 transition-transform hover:scale-[1.02]">
+                <Download className="h-4 w-4" />
+                Data export & retention
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
