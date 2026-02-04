@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
-import { Search, Plus, User } from 'lucide-react'
+import { Plus, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { NotificationCenter } from '@/components/notifications'
-import { Input } from '@/components/ui/input'
+import { SearchBar } from '@/components/search'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,14 +17,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background px-6">
       <div className="flex flex-1 items-center gap-4">
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search..."
-            className="pl-9"
-            aria-label="Search"
-          />
-        </div>
+        <SearchBar />
       </div>
       <div className="flex items-center gap-2">
         <NotificationCenter />

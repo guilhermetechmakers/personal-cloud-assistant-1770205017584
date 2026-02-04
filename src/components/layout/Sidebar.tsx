@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import {
   Inbox,
+  Search,
   Sparkles,
   Zap,
   Bot,
@@ -16,6 +17,7 @@ import { useState } from 'react'
 
 const navItems = [
   { to: '/dashboard', label: 'Inbox', icon: Inbox },
+  { to: '/dashboard/search', label: 'Search', icon: Search },
   { to: '/dashboard/skills', label: 'Skills', icon: Sparkles },
   { to: '/dashboard/automations', label: 'Automations', icon: Zap },
   { to: '/dashboard/web-agent', label: 'Web Agent Runs', icon: Bot },

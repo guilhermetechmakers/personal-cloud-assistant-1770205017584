@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204250000_search_and_user_searches",
+  "created_at": "2025-02-04T25:00:00Z",
+  "description": "Search indexes and user saved searches for Search & Filter feature",
+  "tables_created": ["search_indexes", "user_searches"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS user_searches CASCADE; DROP TABLE IF EXISTS search_indexes CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

@@ -27,6 +27,7 @@ import {
   AdminDashboard,
   Notifications,
   DataManagement,
+  Search,
 } from '@/pages'
 
 const queryClient = new QueryClient({
@@ -73,6 +74,7 @@ export default function App() {
             <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<WorkspaceSettings />} />
             <Route path="data-management" element={<DataManagement />} />
+            <Route path="search" element={<Search />} />
             <Route path="runs/:id" element={<RunDetails />} />
           </Route>
 
