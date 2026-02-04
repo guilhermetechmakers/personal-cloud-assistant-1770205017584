@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { AuthLayout } from '@/components/layout/AuthLayout'
 import { DashboardLayout } from '@/components/layout/DashboardLayout'
+import { RequireVerified } from '@/components/auth/RequireVerified'
 import {
   Landing,
   Login,
@@ -61,7 +62,7 @@ export default function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/admin" element={<AdminDashboard />} />
 
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<RequireVerified><DashboardLayout /></RequireVerified>}>
             <Route index element={<Dashboard />} />
             <Route path="skills" element={<SkillLibrary />} />
             <Route path="skills/studio" element={<SkillStudio />} />
