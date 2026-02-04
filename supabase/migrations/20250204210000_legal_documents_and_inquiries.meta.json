@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204210000_legal_documents_and_inquiries",
+  "created_at": "2025-02-04T21:00:00Z",
+  "description": "Legal policy documents (public read) and legal inquiry submissions (insert public, select own)",
+  "tables_created": ["legal_documents", "legal_inquiries"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS legal_inquiries CASCADE; DROP TABLE IF EXISTS legal_documents CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

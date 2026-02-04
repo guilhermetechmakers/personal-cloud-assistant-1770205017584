@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { AuthLayout } from '@/components/layout/AuthLayout'
@@ -13,9 +13,7 @@ import {
   EmailVerification,
   NotFound,
   ServerError,
-  Privacy,
-  Terms,
-  CookiePolicy,
+  Legal,
   Dashboard,
   SkillLibrary,
   Profile,
@@ -53,9 +51,10 @@ export default function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<EmailVerification />} />
           </Route>
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/cookies" element={<CookiePolicy />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/privacy" element={<Navigate to="/legal?section=privacy" replace />} />
+          <Route path="/terms" element={<Navigate to="/legal?section=terms" replace />} />
+          <Route path="/cookies" element={<Navigate to="/legal?section=cookies" replace />} />
           <Route path="/500" element={<ServerError />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/help" element={<Help />} />
