@@ -20,6 +20,9 @@ import {
   Pencil,
   AlertCircle,
   ExternalLink,
+  Shield,
+  Undo2,
+  History,
 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -34,6 +37,17 @@ import {
   ExportModal,
   ShareLinkDialog,
 } from '@/components/run-details'
+import {
+  ApprovalDecisionModal,
+  AuditLogViewer,
+  UndoDialog,
+} from '@/components/approvals'
+import {
+  useSubmitApprovalDecision,
+  useUndoApproval,
+  useApprovalAuditLogs,
+} from '@/hooks/useApprovals'
+import type { ApprovalDecisionPayload } from '@/types/approval'
 import type {
   RunStep,
   RunApproval,
@@ -163,11 +177,111 @@ function StepCard({
   )
 }
 
+function ApprovalListItem({
+  approval,
+  onEdit,
+  onDecide,
+  onUndo,
+  onToggleHistory,
+  showHistory,
+}: {
+  approval: RunApproval
+  onEdit: () => void
+  onDecide: () => void
+  onUndo: () => void
+  onToggleHistory: () => void
+  showHistory: boolean
+}) {
+  const { data: auditLogs = [], isLoading: logsLoading } = useApprovalAuditLogs(
+    showHistory ? approval.id : null
+  )
+  const isPending = approval.decision === 'pending'
+  const isApproved = approval.decision === 'approved'
+
+  return (
+    <li className="rounded-lg border border-border bg-muted/20 p-3 space-y-3">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-medium text-foreground">
+            {approval.requested_action}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Decision:{' '}
+            <span
+              className={cn(
+                approval.decision === 'approved' && 'text-success',
+                approval.decision === 'rejected' && 'text-destructive',
+                approval.decision === 'pending' && 'text-warning'
+              )}
+            >
+              {approval.decision}
+            </span>
+            {approval.actor && ` · ${approval.actor}`}
+          </p>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          {isPending && (
+            <Button
+              variant="default"
+              size="sm"
+              className="h-8 gap-1.5 bg-primary text-primary-foreground"
+              onClick={onDecide}
+              aria-label="Decide on approval"
+            >
+              <Shield className="h-3.5 w-3.5" />
+              Decide
+            </Button>
+          )}
+          {isApproved && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 gap-1.5 border-border"
+              onClick={onUndo}
+              aria-label="Undo approval"
+            >
+              <Undo2 className="h-3.5 w-3.5" />
+              Undo
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={onEdit}
+            aria-label="Edit approval"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={onToggleHistory}
+            aria-label={showHistory ? 'Hide history' : 'Show history'}
+          >
+            <History className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      {showHistory && (
+        <AuditLogViewer
+          logs={auditLogs}
+          isLoading={logsLoading}
+          className="border-0 shadow-none bg-transparent p-0"
+        />
+      )}
+    </li>
+  )
+}
+
 export function RunDetails() {
   const { id } = useParams<{ id: string }>()
   const runId = id ?? ''
   const { data, isLoading, isError } = useRunDetails(runId)
   const updateApproval = useUpdateRunApproval(runId)
+  const submitDecision = useSubmitApprovalDecision(runId)
+  const undoApprovalMutation = useUndoApproval(runId)
   const exportRun = useExportRun()
   const shareLink = useShareLink()
 
@@ -176,6 +290,11 @@ export function RunDetails() {
   const [approvalEditing, setApprovalEditing] = useState<RunApproval | null>(
     null
   )
+  const [decisionModalOpen, setDecisionModalOpen] = useState(false)
+  const [approvalForDecision, setApprovalForDecision] = useState<RunApproval | null>(null)
+  const [undoDialogOpen, setUndoDialogOpen] = useState(false)
+  const [approvalForUndo, setApprovalForUndo] = useState<RunApproval | null>(null)
+  const [approvalLogId, setApprovalLogId] = useState<string | null>(null)
   const [exportOpen, setExportOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [shareUrl, setShareUrl] = useState<string | null>(null)
@@ -184,6 +303,44 @@ export function RunDetails() {
     setApprovalEditing(approval)
     setApprovalEditOpen(true)
   }
+
+  const handleOpenDecision = (approval: RunApproval) => {
+    setApprovalForDecision(approval)
+    setDecisionModalOpen(true)
+  }
+
+  const handleDecision = useCallback(
+    (payload: ApprovalDecisionPayload): Promise<void> => {
+      if (!approvalForDecision) return Promise.resolve()
+      return submitDecision.mutateAsync({
+        approvalId: approvalForDecision.id,
+        payload,
+      }).then(() => {
+        setApprovalForDecision(null)
+        setDecisionModalOpen(false)
+      })
+    },
+    [approvalForDecision, submitDecision]
+  )
+
+  const handleOpenUndo = (approval: RunApproval) => {
+    setApprovalForUndo(approval)
+    setUndoDialogOpen(true)
+  }
+
+  const handleUndo = useCallback(
+    (comments?: string) => {
+      if (!approvalForUndo) return Promise.resolve()
+      return undoApprovalMutation.mutateAsync({
+        approvalId: approvalForUndo.id,
+        comments,
+      }).then(() => {
+        setApprovalForUndo(null)
+        setUndoDialogOpen(false)
+      })
+    },
+    [approvalForUndo, undoApprovalMutation]
+  )
 
   const handleSaveApproval = useCallback(
     (updates: RunApprovalUpdate) => {
@@ -495,40 +652,19 @@ export function RunDetails() {
                 ) : (
                   <ul className="space-y-3">
                     {approvals.map((approval: RunApproval) => (
-                      <li
+                      <ApprovalListItem
                         key={approval.id}
-                        className="rounded-lg border border-border bg-muted/20 p-3"
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <p className="text-sm font-medium text-foreground">
-                              {approval.requested_action}
-                            </p>
-                            <p className="mt-1 text-xs text-muted-foreground">
-                              Decision:{' '}
-                              <span
-                                className={cn(
-                                  approval.decision === 'approved' && 'text-success',
-                                  approval.decision === 'rejected' && 'text-destructive',
-                                  approval.decision === 'pending' && 'text-warning'
-                                )}
-                              >
-                                {approval.decision}
-                              </span>
-                              {approval.actor && ` · ${approval.actor}`}
-                            </p>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 shrink-0"
-                            onClick={() => handleEditApproval(approval)}
-                            aria-label="Edit approval"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </li>
+                        approval={approval}
+                        onEdit={() => handleEditApproval(approval)}
+                        onDecide={() => handleOpenDecision(approval)}
+                        onUndo={() => handleOpenUndo(approval)}
+                        onToggleHistory={() =>
+                          setApprovalLogId((prev) =>
+                            prev === approval.id ? null : approval.id
+                          )
+                        }
+                        showHistory={approvalLogId === approval.id}
+                      />
                     ))}
                   </ul>
                 )}
@@ -558,6 +694,27 @@ export function RunDetails() {
         shareUrl={shareUrl}
         onGenerate={handleGenerateShare}
         isGenerating={shareLink.isPending}
+      />
+      <ApprovalDecisionModal
+        open={decisionModalOpen}
+        onOpenChange={(open) => {
+          setDecisionModalOpen(open)
+          if (!open) setApprovalForDecision(null)
+        }}
+        approval={approvalForDecision}
+        workflowName={run?.skill_name ?? 'Run'}
+        onDecision={handleDecision}
+        isSubmitting={submitDecision.isPending}
+      />
+      <UndoDialog
+        open={undoDialogOpen}
+        onOpenChange={(open) => {
+          setUndoDialogOpen(open)
+          if (!open) setApprovalForUndo(null)
+        }}
+        approval={approvalForUndo}
+        onUndo={handleUndo}
+        isSubmitting={undoApprovalMutation.isPending}
       />
     </AnimatedPage>
   )

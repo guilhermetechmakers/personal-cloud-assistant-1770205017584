@@ -55,6 +55,7 @@ export interface RunApproval {
 export interface RunApprovalUpdate {
   decision?: ApprovalDecision
   actor?: string | null
+  payload?: Record<string, unknown>
   rollback_options?: Record<string, unknown>
 }
 

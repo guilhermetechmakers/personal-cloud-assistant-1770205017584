@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204220000_approvals_trust_controls",
+  "created_at": "2025-02-04T22:00:00Z",
+  "description": "Approval audit logs and auto-approval rules for Approvals & Trust Controls feature",
+  "tables_created": ["approval_audit_logs", "approval_rules"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS approval_rules CASCADE; DROP TABLE IF EXISTS approval_audit_logs CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

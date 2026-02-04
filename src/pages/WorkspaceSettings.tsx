@@ -1,12 +1,29 @@
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { AnimatedPage } from '@/components/layout/AnimatedPage'
-import { Building2, Users, CreditCard, Shield, FileText, Download } from 'lucide-react'
+import { Building2, Users, CreditCard, Shield, FileText, Download, ShieldCheck, Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useApprovalRules, useCreateApprovalRule } from '@/hooks/useApprovals'
+import { useProfileView } from '@/hooks/useProfile'
+import { RuleCreationForm } from '@/components/approvals'
+import type { ApprovalRuleInsert } from '@/types/approval'
+import { cn } from '@/lib/utils'
 
 export function WorkspaceSettings() {
+  const { data: profile } = useProfileView()
+  const { data: rules = [], isLoading: rulesLoading } = useApprovalRules()
+  const createRule = useCreateApprovalRule()
+  const [ruleFormOpen, setRuleFormOpen] = useState(false)
+
+  const handleCreateRule = (payload: ApprovalRuleInsert) => {
+    createRule.mutate(payload, {
+      onSuccess: () => setRuleFormOpen(false),
+    })
+  }
   return (
     <AnimatedPage>
       <div className="space-y-8">
@@ -95,6 +112,51 @@ export function WorkspaceSettings() {
         <Card className="border-border bg-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
+              <ShieldCheck className="h-5 w-5" />
+              Approval rules
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Auto-approval rules for matching actions (Trust & Controls)
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {rulesLoading ? (
+              <p className="text-sm text-muted-foreground">Loading rules…</p>
+            ) : rules.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No approval rules yet. Create a rule to auto-approve future matching actions.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {rules.map((rule) => (
+                  <li
+                    key={rule.id}
+                    className={cn(
+                      'flex items-center justify-between rounded-lg border border-border bg-muted/20 px-3 py-2 text-sm text-foreground'
+                    )}
+                  >
+                    <span className="font-medium">{rule.name}</span>
+                    <span className="text-muted-foreground">{rule.action_type}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {profile?.id && (
+              <Button
+                variant="outline"
+                className="gap-2 border-border"
+                onClick={() => setRuleFormOpen(true)}
+              >
+                <Plus className="h-4 w-4" />
+                Create rule
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-border bg-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <FileText className="h-5 w-5" />
               Audit Logs
             </CardTitle>
@@ -107,6 +169,20 @@ export function WorkspaceSettings() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={ruleFormOpen} onOpenChange={setRuleFormOpen}>
+        <DialogContent className="sm:max-w-md border-border bg-card p-0 gap-0">
+          {profile?.id && (
+            <RuleCreationForm
+              userId={profile.id}
+              onSubmit={handleCreateRule}
+              onCancel={() => setRuleFormOpen(false)}
+              isSubmitting={createRule.isPending}
+              className="border-0 shadow-none rounded-lg"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   )
 }
