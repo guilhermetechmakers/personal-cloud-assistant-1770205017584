@@ -64,6 +64,7 @@ export default function App() {
 
           <Route path="/dashboard" element={<RequireVerified><DashboardLayout /></RequireVerified>}>
             <Route index element={<Dashboard />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="skills" element={<SkillLibrary />} />
             <Route path="skills/studio" element={<SkillStudio />} />
             <Route path="automations" element={<Automations />} />

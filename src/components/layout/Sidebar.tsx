@@ -5,6 +5,7 @@ import {
   Zap,
   Bot,
   Settings,
+  User,
   ChevronDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -80,6 +81,17 @@ export function Sidebar() {
               <Link to="/help">
                 <span className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-card hover:text-foreground">
                   Help & Docs
+                </span>
+              </Link>
+              <Link to="/dashboard/profile">
+                <span
+                  className={cn(
+                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-card hover:text-foreground',
+                    location.pathname === '/dashboard/profile' && 'bg-primary/15 text-primary'
+                  )}
+                >
+                  <User className="h-4 w-4" />
+                  Profile
                 </span>
               </Link>
             </div>

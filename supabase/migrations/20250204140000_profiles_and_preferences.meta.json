@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204140000_profiles_and_preferences",
+  "created_at": "2025-02-04T14:00:00Z",
+  "description": "Creates profiles (extended user data) and user_preferences (assistant tone, verbosity, approval level) for User Profile page",
+  "tables_created": ["profiles", "user_preferences"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS user_preferences CASCADE; DROP TABLE IF EXISTS profiles CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
