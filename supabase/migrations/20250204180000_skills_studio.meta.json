@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204180000_skills_studio",
+  "created_at": "2025-02-04T18:00:00Z",
+  "description": "Skill Studio tables: skills, skill_blocks, skill_version_history, skill_tests",
+  "tables_created": ["skills", "skill_blocks", "skill_version_history", "skill_tests"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS skill_tests CASCADE; DROP TABLE IF EXISTS skill_version_history CASCADE; DROP TABLE IF EXISTS skill_blocks CASCADE; DROP TABLE IF EXISTS skills CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
