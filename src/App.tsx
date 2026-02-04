@@ -24,6 +24,7 @@ import {
   RunDetails,
   WebAgentRuns,
   Checkout,
+  Demo,
   AdminDashboard,
   Notifications,
   DataManagement,
@@ -62,6 +63,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/help" element={<Help />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="/admin" element={<AdminDashboard />} />
 
           <Route path="/dashboard" element={<RequireVerified><DashboardLayout /></RequireVerified>}>

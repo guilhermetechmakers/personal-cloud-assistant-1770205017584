@@ -54,6 +54,9 @@ export default {
         'slide-in-right': 'slideInRight 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'bounce-in': 'bounceIn 0.6s ease-out',
+        'blob': 'blob 8s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 6s ease infinite',
+        'float': 'float 3s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -86,6 +89,32 @@ export default {
           '70%': { transform: 'scale(0.9)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        blob: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animationDelay: {
+        '100': '100ms',
+        '200': '200ms',
+        '300': '300ms',
+        '400': '400ms',
+        '500': '500ms',
+      },
+      animationFillMode: {
+        backwards: 'backwards',
+      },
+      backgroundSize: {
+        '200%': '200%',
       },
       boxShadow: {
         card: '0 2px 8px rgba(0, 0, 0, 0.15)',

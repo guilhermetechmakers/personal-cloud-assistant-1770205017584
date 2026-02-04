@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204260000_landing_content_tables",
+  "created_at": "2025-02-04T26:00:00Z",
+  "description": "Landing page CMS tables: feature_details, pricing_details, landing_content",
+  "tables_created": ["feature_details", "pricing_details", "landing_content"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS landing_content CASCADE; DROP TABLE IF EXISTS pricing_details CASCADE; DROP TABLE IF EXISTS feature_details CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
