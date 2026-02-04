@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204280000_connectors_audit_webhooks",
+  "created_at": "2025-02-04T28:00:00Z",
+  "description": "Connectors (OAuth/token management), connector_audit_logs, and webhook_events tables for Connector Service",
+  "tables_created": ["connectors", "connector_audit_logs", "webhook_events"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS webhook_events CASCADE; DROP TABLE IF EXISTS connector_audit_logs CASCADE; DROP TABLE IF EXISTS connectors CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

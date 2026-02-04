@@ -10,6 +10,7 @@ import {
   User,
   ChevronDown,
   Database,
+  Plug,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -21,6 +22,7 @@ const navItems = [
   { to: '/dashboard/skills', label: 'Skills', icon: Sparkles },
   { to: '/dashboard/automations', label: 'Automations', icon: Zap },
   { to: '/dashboard/web-agent', label: 'Web Agent Runs', icon: Bot },
+  { to: '/dashboard/integrations', label: 'Integrations', icon: Plug },
   { to: '/dashboard/notifications', label: 'Notifications', icon: Bell },
 ]
 

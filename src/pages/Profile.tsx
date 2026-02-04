@@ -45,7 +45,6 @@ import {
   HelpCircle,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 
 const editProfileSchema = z.object({
@@ -353,6 +352,9 @@ function SecuritySection({
         <Separator className="bg-border" />
         <div>
           <p className="mb-2 font-medium text-foreground">Active sessions</p>
+          <p className="mb-2 text-sm text-muted-foreground">
+            This is the session for this device. To sign out on other devices, change your password—that will invalidate all other sessions.
+          </p>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {sessions.map((s) => (
               <li key={s.id} className="flex items-center justify-between">
@@ -365,15 +367,20 @@ function SecuritySection({
               </li>
             ))}
           </ul>
-          <Button
-            variant="outline"
-            size="sm"
-            className="mt-3 transition-transform hover:scale-[1.02]"
-            onClick={onRevokeOthers}
-            disabled={isRevokeLoading}
-          >
-            Revoke other sessions
-          </Button>
+          <div className="mt-3 flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="transition-transform hover:scale-[1.02]"
+              onClick={onRevokeOthers}
+              disabled={isRevokeLoading}
+            >
+              Revoke other sessions
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/forgot-password">Change password</Link>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -458,11 +465,9 @@ export function Profile() {
   const { data: profile, isLoading, error } = useProfileView()
 
   const handleLogout = async () => {
-    if (supabase) {
-      await supabase.auth.signOut()
-    }
-    localStorage.removeItem('auth_token')
-    navigate('/login', { replace: true })
+    const { signOut: authSignOut } = await import('@/lib/auth')
+    await authSignOut()
+    navigate('/', { replace: true })
   }
   const updateProfileMutation = useUpdateProfile()
   const updatePreferencesMutation = useUpdatePreferences()

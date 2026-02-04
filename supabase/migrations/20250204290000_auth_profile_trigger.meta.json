@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204290000_auth_profile_trigger",
+  "created_at": "2025-02-04T29:00:00Z",
+  "description": "Trigger to auto-create public.profiles row when a new user signs up (auth.users INSERT)",
+  "tables_created": [],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users; DROP FUNCTION IF EXISTS public.handle_new_auth_user();",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

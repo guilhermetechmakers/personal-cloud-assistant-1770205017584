@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { Plus, User } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Plus, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { NotificationCenter } from '@/components/notifications'
 import { SearchBar } from '@/components/search'
@@ -12,8 +12,27 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useAuth } from '@/hooks/useAuth'
+import { signOut } from '@/lib/auth'
 
 export function Navbar() {
+  const navigate = useNavigate()
+  const { user, isLoading } = useAuth()
+  const email = user?.email ?? ''
+  const displayName = ((user?.user_metadata?.full_name ?? user?.user_metadata?.name) ?? email) || 'Account'
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined
+  const initials = displayName
+    .split(/\s+/)
+    .map((s: string) => s[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || '?'
+
+  const handleLogout = async () => {
+    await signOut()
+    navigate('/', { replace: true })
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background px-6">
       <div className="flex flex-1 items-center gap-4">
@@ -29,11 +48,11 @@ export function Navbar() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+            <Button variant="ghost" className="relative h-9 w-9 rounded-full" disabled={isLoading}>
               <Avatar className="h-9 w-9">
-                <AvatarImage src="" alt="User" />
+                <AvatarImage src={avatarUrl} alt={displayName} />
                 <AvatarFallback className="bg-primary/20 text-primary">
-                  <User className="h-4 w-4" />
+                  {initials}
                 </AvatarFallback>
               </Avatar>
             </Button>
@@ -42,7 +61,7 @@ export function Navbar() {
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium">Account</p>
-                <p className="text-xs text-muted-foreground">user@example.com</p>
+                <p className="text-xs text-muted-foreground truncate">{email || 'Signed in'}</p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -53,8 +72,9 @@ export function Navbar() {
               <Link to="/dashboard/settings">Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/login">Log out</Link>
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
