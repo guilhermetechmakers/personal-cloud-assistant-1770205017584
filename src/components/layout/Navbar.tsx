@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
-import { Search, Bell, Plus, User } from 'lucide-react'
+import { Search, Plus, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { NotificationCenter } from '@/components/notifications'
 import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
@@ -26,9 +27,7 @@ export function Navbar() {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" aria-label="Notifications">
-          <Bell className="h-4 w-4" />
-        </Button>
+        <NotificationCenter />
         <Button asChild size="sm">
           <Link to="/dashboard/skills/studio">
             <Plus className="mr-2 h-4 w-4" />

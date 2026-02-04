@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { AnimatedPage } from '@/components/layout/AnimatedPage'
-import { Building2, Users, CreditCard, Shield, FileText, Download, ShieldCheck, Plus } from 'lucide-react'
+import { Building2, Users, CreditCard, Shield, FileText, Download, ShieldCheck, Plus, Bell } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useApprovalRules, useCreateApprovalRule } from '@/hooks/useApprovals'
 import { useProfileView } from '@/hooks/useProfile'
@@ -151,6 +151,25 @@ export function WorkspaceSettings() {
                 Create rule
               </Button>
             )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-border bg-card">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-foreground">
+              <Bell className="h-5 w-5" />
+              Notifications
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Notification channels (in-app, email, push) and preferences per event type
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link to="/dashboard/notifications">
+              <Button variant="outline" className="transition-transform hover:scale-[1.02]">
+                Notification preferences
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 

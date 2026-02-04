@@ -4,6 +4,7 @@ import {
   Sparkles,
   Zap,
   Bot,
+  Bell,
   Settings,
   User,
   ChevronDown,
@@ -17,6 +18,7 @@ const navItems = [
   { to: '/dashboard/skills', label: 'Skills', icon: Sparkles },
   { to: '/dashboard/automations', label: 'Automations', icon: Zap },
   { to: '/dashboard/web-agent', label: 'Web Agent Runs', icon: Bot },
+  { to: '/dashboard/notifications', label: 'Notifications', icon: Bell },
 ]
 
 export function Sidebar() {

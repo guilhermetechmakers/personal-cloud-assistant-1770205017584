@@ -1,0 +1,12 @@
+{
+  "migration_name": "20250204230000_notifications_and_preferences",
+  "created_at": "2025-02-04T23:00:00Z",
+  "description": "Creates notifications and notification_preferences for Notifications & Alerts feature",
+  "tables_created": ["notifications", "notification_preferences"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS notification_preferences CASCADE; DROP TABLE IF EXISTS notifications CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

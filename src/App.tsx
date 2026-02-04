@@ -25,6 +25,7 @@ import {
   WebAgentRuns,
   Checkout,
   AdminDashboard,
+  Notifications,
 } from '@/pages'
 
 const queryClient = new QueryClient({
@@ -68,6 +69,7 @@ export default function App() {
             <Route path="skills/studio" element={<SkillStudio />} />
             <Route path="automations" element={<Automations />} />
             <Route path="web-agent" element={<WebAgentRuns />} />
+            <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<WorkspaceSettings />} />
             <Route path="runs/:id" element={<RunDetails />} />
           </Route>
